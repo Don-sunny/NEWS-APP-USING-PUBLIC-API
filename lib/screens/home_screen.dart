@@ -6,6 +6,7 @@ import 'package:news_app/services/utils.dart';
 import 'package:news_app/widgets/article_widget.dart';
 
 import 'package:news_app/widgets/drawer_widget.dart';
+import 'package:news_app/widgets/loading_widget.dart';
 import 'package:news_app/widgets/tabs.dart';
 import 'package:news_app/widgets/vertical_spacing.dart';
 
@@ -162,13 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-              Expanded(
-                child: ListView.builder(
-                    itemCount: 20,
-                    itemBuilder: (ctx, index) {
-                      return const ArticleWidget();
-                    }),
-              )
+              const LoadingWidget()
             ],
           ),
         ),
