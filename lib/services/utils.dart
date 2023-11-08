@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:news_app/providers/theme_providerl.dart';
 import 'package:provider/provider.dart';
