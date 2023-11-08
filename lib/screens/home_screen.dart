@@ -6,6 +6,7 @@ import 'package:news_app/services/utils.dart';
 
 import 'package:news_app/widgets/drawer_widget.dart';
 import 'package:news_app/widgets/tabs.dart';
+import 'package:news_app/widgets/vertical_spacing.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var newType = NewsType.allNews;
+  int currentPageIndex = 0;
   @override
   Widget build(BuildContext context) {
     final color = Utils(context: context).getColor;
@@ -40,11 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           ],
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
                 children: [
                   TabWidget(
                       text: 'All news',
@@ -79,11 +81,84 @@ class _HomeScreenState extends State<HomeScreen> {
                       fontSize: newType == NewsType.topTrending ? 22 : 14)
                 ],
               ),
-            )
-          ],
+              const VerticalSapcing(height: 10),
+              newType == NewsType.topTrending
+                  ? Container()
+                  : SizedBox(
+                      height: kBottomNavigationBarHeight,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          paginationButtons(
+                              function: () {
+                                if (currentPageIndex == 0) {
+                                  return;
+                                }
+                                setState(() {
+                                  currentPageIndex--;
+                                });
+                              },
+                              text: 'Prev'),
+                          Flexible(
+                            flex: 2,
+                            child: ListView.builder(
+                                itemCount: 10,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (ctx, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Material(
+                                      color: currentPageIndex == index
+                                          ? Colors.blue
+                                          : Theme.of(context).cardColor,
+                                      child: InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            currentPageIndex = index;
+                                          });
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Center(
+                                              child: Text('${index + 1}')),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                          ),
+                          paginationButtons(
+                              function: () {
+                                if (currentPageIndex == 9) {
+                                  return;
+                                }
+                                setState(() {
+                                  currentPageIndex++;
+                                });
+                              },
+                              text: 'Next'),
+                        ],
+                      ),
+                    )
+            ],
+          ),
         ),
         drawer: const DrawerWidget(),
       ),
+    );
+  }
+
+  Widget paginationButtons({required Function function, required String text}) {
+    return ElevatedButton(
+      onPressed: () {
+        function();
+      },
+      style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.blue,
+          padding: const EdgeInsets.all(6.0),
+          textStyle:
+              const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+      child: Text(text),
     );
   }
 }
