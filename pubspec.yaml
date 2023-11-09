@@ -35,6 +35,7 @@ dependencies:
     sdk: flutter
   flutter_iconly: ^1.0.2
   google_fonts: ^6.1.0
+  page_transition: ^2.1.0
   provider: ^6.0.5
   shared_preferences: ^2.2.2
   shimmer: ^3.0.0

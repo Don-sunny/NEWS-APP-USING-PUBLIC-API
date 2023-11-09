@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app/consts/vars.dart';
+import 'package:news_app/inner_screens/serach_screen.dart';
 import 'package:news_app/services/utils.dart';
 import 'package:news_app/widgets/article_widget.dart';
-
 import 'package:news_app/widgets/drawer_widget.dart';
-import 'package:news_app/widgets/loading_widget.dart';
 import 'package:news_app/widgets/tabs.dart';
 import 'package:news_app/widgets/top_trending.dart';
 import 'package:news_app/widgets/vertical_spacing.dart';
+import 'package:page_transition/page_transition.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -43,8 +43,20 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           actions: [
             IconButton(
-              onPressed: () {},
-              icon: const Icon(IconlyLight.search),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    child: const SearchScreen(),
+                    type: PageTransitionType.rightToLeft,
+                    inheritTheme: true,
+                    ctx: context,
+                  ),
+                );
+              },
+              icon: const Icon(
+                IconlyLight.search,
+              ),
             )
           ],
         ),
