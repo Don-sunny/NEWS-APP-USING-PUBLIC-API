@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:news_app/inner_screens/bookmarks_screen.dart';
+import 'package:news_app/inner_screens/serach_screen.dart';
 import 'package:news_app/providers/theme_providerl.dart';
 import 'package:news_app/widgets/vertical_spacing.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -47,7 +50,19 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             const VerticalSapcing(height: 20),
             ListTileWidget(label: 'Home', icon: IconlyBold.home, fct: () {}),
             ListTileWidget(
-                label: 'Bookmark', icon: IconlyBold.bookmark, fct: () {}),
+                label: 'Bookmark',
+                icon: IconlyBold.bookmark,
+                fct: () {
+                  Navigator.push(
+                    context,
+                    PageTransition(
+                      child: const BookMarkScreen(),
+                      type: PageTransitionType.rightToLeft,
+                      inheritTheme: true,
+                      ctx: context,
+                    ),
+                  );
+                }),
             const Divider(),
             SwitchListTile(
                 value: themeProvider.getDarkTheme,

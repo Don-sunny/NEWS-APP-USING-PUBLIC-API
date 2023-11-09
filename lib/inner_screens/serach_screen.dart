@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:news_app/consts/vars.dart';
 import 'package:news_app/services/utils.dart';
+import 'package:news_app/widgets/empty_screen.dart';
+import 'package:news_app/widgets/vertical_spacing.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -41,53 +45,93 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Scaffold(
             body: Column(
           children: [
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Icon(
-                    IconlyLight.arrowLeft2,
-                  ),
-                ),
-                Flexible(
-                    child: TextField(
-                  focusNode: focusNode,
-                  controller: _searchEditingController,
-                  style: TextStyle(color: color),
-                  autofocus: true,
-                  textInputAction: TextInputAction.search,
-                  keyboardType: TextInputType.text,
-                  onEditingComplete: () {},
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(
-                      bottom: 8 / 5,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      IconlyLight.arrowLeft2,
                     ),
-                    hintText: 'Search',
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    suffix: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 5,
+                  ),
+                  Flexible(
+                      child: TextField(
+                    focusNode: focusNode,
+                    controller: _searchEditingController,
+                    style: TextStyle(color: color),
+                    autofocus: true,
+                    textInputAction: TextInputAction.search,
+                    keyboardType: TextInputType.text,
+                    onEditingComplete: () {},
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.only(
+                        bottom: 8 / 5,
                       ),
-                      child: GestureDetector(
-                        onTap: () {
-                          _searchEditingController.clear();
-                          focusNode.unfocus();
-                          setState(() {});
-                        },
-                        child: const Icon(
-                          Icons.close,
-                          size: 18,
-                          color: Colors.red,
+                      hintText: 'Search',
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      suffix: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 5,
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            _searchEditingController.clear();
+                            focusNode.unfocus();
+                            setState(() {});
+                          },
+                          child: const Icon(
+                            Icons.close,
+                            size: 18,
+                            color: Colors.red,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ))
-              ],
-            )
+                  ))
+                ],
+              ),
+            ),
+            const VerticalSapcing(
+              height: 20,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: MasonryGridView.count(
+                  itemCount: searchKeywords.length,
+                  crossAxisCount: 4,
+                  mainAxisSpacing: 4,
+                  crossAxisSpacing: 4,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        margin: const EdgeInsets.all(4.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: color),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: Text(
+                              searchKeywords[index],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            const EmptyNewsWdiget(
+                text: 'Ops! No result found',
+                imagePath: 'assets/images/search.png')
           ],
         )),
       ),

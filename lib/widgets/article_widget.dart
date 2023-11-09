@@ -2,6 +2,7 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/consts/vars.dart';
 import 'package:news_app/services/utils.dart';
+import 'package:news_app/widgets/news_details_webview.dart';
 import 'package:news_app/widgets/top_trending.dart';
 import 'package:news_app/widgets/vertical_spacing.dart';
 
@@ -78,7 +79,16 @@ class ArticleWidget extends StatelessWidget {
                           child: Row(
                             children: [
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (ctx) {
+                                        return NewsDetailsWebView();
+                                      },
+                                    ),
+                                  );
+                                },
                                 icon: const Icon(
                                   Icons.link,
                                   color: Colors.blue,
