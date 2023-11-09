@@ -150,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 10,
               ),
               newType == NewsType.topTrending
-                  ? SizedBox()
+                  ? Container()
                   : Align(
                       alignment: Alignment.topRight,
                       child: Material(
