@@ -2,6 +2,7 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/consts/vars.dart';
 import 'package:news_app/services/utils.dart';
+import 'package:news_app/widgets/top_trending.dart';
 import 'package:news_app/widgets/vertical_spacing.dart';
 
 class ArticleWidget extends StatelessWidget {
@@ -15,7 +16,9 @@ class ArticleWidget extends StatelessWidget {
       child: Material(
         color: Theme.of(context).cardColor,
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            TopTrendingWidget();
+          },
           child: Stack(
             children: [
               Container(
