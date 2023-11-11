@@ -1,11 +1,14 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:news_app/inner_screens/blog_details.dart';
+import 'package:news_app/widgets/news_details_webview.dart';
+import 'package:page_transition/page_transition.dart';
 
 import '../services/utils.dart';
 
 class TopTrendingWidget extends StatelessWidget {
-  const TopTrendingWidget({Key? key}) : super(key: key);
+  const TopTrendingWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,17 @@ class TopTrendingWidget extends StatelessWidget {
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12.0),
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              PageTransition(
+                child: const NewsDetailsScreen(),
+                type: PageTransitionType.rightToLeft,
+                inheritTheme: true,
+                ctx: context,
+              ),
+            );
+          },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             // mainAxisAlignment: MainAxisAlignment.start,
@@ -43,10 +56,31 @@ class TopTrendingWidget extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
-                      onPressed: () async {},
-                      icon: Icon(
-                        Icons.link,
-                        color: color,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            child: const NewsDetailsScreen(),
+                            type: PageTransitionType.rightToLeft,
+                            inheritTheme: true,
+                            ctx: context,
+                          ),
+                        );
+                      },
+                      icon: IconButton(
+                        icon: const Icon(Icons.link),
+                        color: Colors.blue,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              child: const NewsDetailsWebView(),
+                              type: PageTransitionType.rightToLeft,
+                              inheritTheme: true,
+                              ctx: context,
+                            ),
+                          );
+                        },
                       )),
                   const Spacer(),
                   SelectableText(

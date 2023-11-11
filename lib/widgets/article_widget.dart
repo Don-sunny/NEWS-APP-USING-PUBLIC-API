@@ -1,10 +1,11 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/consts/vars.dart';
+import 'package:news_app/consts/styles.dart';
+import 'package:news_app/inner_screens/blog_details.dart';
 import 'package:news_app/services/utils.dart';
 import 'package:news_app/widgets/news_details_webview.dart';
-import 'package:news_app/widgets/top_trending.dart';
 import 'package:news_app/widgets/vertical_spacing.dart';
+import 'package:page_transition/page_transition.dart';
 
 class ArticleWidget extends StatelessWidget {
   const ArticleWidget({super.key});
@@ -18,7 +19,7 @@ class ArticleWidget extends StatelessWidget {
         color: Theme.of(context).cardColor,
         child: InkWell(
           onTap: () {
-            TopTrendingWidget();
+            Navigator.pushNamed(context, NewsDetailsScreen.routeName);
           },
           child: Stack(
             children: [
@@ -82,10 +83,11 @@ class ArticleWidget extends StatelessWidget {
                                 onPressed: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(
-                                      builder: (ctx) {
-                                        return NewsDetailsWebView();
-                                      },
+                                    PageTransition(
+                                      child: const NewsDetailsScreen(),
+                                      type: PageTransitionType.rightToLeft,
+                                      inheritTheme: true,
+                                      ctx: context,
                                     ),
                                   );
                                 },

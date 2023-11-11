@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:news_app/services/global_method.dart';
 import 'package:news_app/services/utils.dart';
 import 'package:news_app/widgets/vertical_spacing.dart';
 import 'package:share_plus/share_plus.dart';
@@ -142,7 +143,8 @@ class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
                       Share.share('https://github.com/NaimurNoyon/WebView_App',
                           subject: 'Look what I made!');
                     } catch (err) {
-                      log(err.toString());
+                      GlobalMethod.errorDialog(
+                          errorMessage: err.toString(), context: context);
                     }
                   },
                 ),

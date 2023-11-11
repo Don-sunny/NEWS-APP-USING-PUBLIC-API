@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:news_app/consts/theme_data.dart';
+import 'package:news_app/inner_screens/blog_details.dart';
 import 'package:news_app/providers/theme_providerl.dart';
 import 'package:news_app/screens/home_screen.dart';
 import 'package:provider/provider.dart';
@@ -50,10 +51,14 @@ class _MyAppState extends State<MyApp> {
           //Notify about theme changes
           Consumer<ThemeProvider>(builder: (context, thmeChangeProvider, ch) {
         return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Blog',
-            theme: Styles.themeData(changeThmeProvider.getDarkTheme, context),
-            home: HomeScreen());
+          debugShowCheckedModeBanner: false,
+          title: 'Blog',
+          theme: Styles.themeData(changeThmeProvider.getDarkTheme, context),
+          home: HomeScreen(),
+          routes: {
+            NewsDetailsScreen.routeName: (ctx) => const NewsDetailsScreen()
+          },
+        );
       }),
     );
   }
