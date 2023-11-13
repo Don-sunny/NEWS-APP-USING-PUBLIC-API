@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app/consts/vars.dart';
 import 'package:news_app/inner_screens/serach_screen.dart';
+import 'package:news_app/services/news_api.dart';
 import 'package:news_app/services/utils.dart';
 import 'package:news_app/widgets/article_widget.dart';
 import 'package:news_app/widgets/drawer_widget.dart';
@@ -23,6 +26,13 @@ class _HomeScreenState extends State<HomeScreen> {
   var newType = NewsType.allNews;
   int currentPageIndex = 0;
   String sortBy = SortByEnum.publishedAt.name;
+
+  @override
+  void didChangeDependencies() {
+    NewsAPiServices.getAllNews();
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = Utils(context: context).getColor;

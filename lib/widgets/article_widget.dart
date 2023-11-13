@@ -84,7 +84,7 @@ class ArticleWidget extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     PageTransition(
-                                      child: const NewsDetailsScreen(),
+                                      child: const NewsDetailsWebView(),
                                       type: PageTransitionType.rightToLeft,
                                       inheritTheme: true,
                                       ctx: context,
