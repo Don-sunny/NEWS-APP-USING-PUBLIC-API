@@ -33,7 +33,7 @@ class NewsModel {
       title: json["title"] ?? "",
       description: json["description"] ?? "",
       url: json["url"] ?? "",
-      urlToImage: json["urlToImage"] ?? "",
+      urlToImage: json["urlToImage"] ?? "assets/images/empty_image.png",
       publishedAt: json["publishedAt"] ?? "",
       content: json["content"] ?? "",
       dateToShow: "dateToShow",

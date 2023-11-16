@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app/inner_screens/bookmarks_screen.dart';
-import 'package:news_app/inner_screens/serach_screen.dart';
 import 'package:news_app/providers/theme_providerl.dart';
 import 'package:news_app/widgets/vertical_spacing.dart';
 import 'package:page_transition/page_transition.dart';

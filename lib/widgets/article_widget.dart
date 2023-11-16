@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/consts/styles.dart';
@@ -8,7 +9,8 @@ import 'package:news_app/widgets/vertical_spacing.dart';
 import 'package:page_transition/page_transition.dart';
 
 class ArticleWidget extends StatelessWidget {
-  const ArticleWidget({super.key});
+  const ArticleWidget({super.key, required this.imageUrl});
+  final String imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +51,9 @@ class ArticleWidget extends StatelessWidget {
                           height: size.height * 0.12,
                           width: size.height * 0.12,
                           boxFit: BoxFit.fill,
-                          imageUrl:
-                              'https://media.wired.com/photos/6332360740fe1e8870aa3bc0/3:2/w_2400,h_1600,c_limit/iPhone-14-Review-Gear.jpg'),
+                          errorWidget:
+                              Image.asset('assets/images/empty_image.png'),
+                          imageUrl: imageUrl),
                     ),
                     const SizedBox(
                       width: 10,

@@ -32,6 +32,7 @@ class NewsAPiServices {
       // log(v.toString());
       // print(data["articles"].length.toString());
     }
+    print('list :$newsTempList');
     return NewsModel.newsFromSnapshot(newsTempList);
   }
 }
