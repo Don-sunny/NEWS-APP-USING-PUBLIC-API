@@ -29,11 +29,11 @@ class _HomeScreenState extends State<HomeScreen> {
   String sortBy = SortByEnum.publishedAt.name;
   // List<NewsModel> newsList = [];
 
-  @override
-  void didChangeDependencies() {
-    getNewsList();
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   getNewsList();
+  //   super.didChangeDependencies();
+  // }
 
   Future<List<NewsModel>> getNewsList() async {
     List<NewsModel> newsList = await NewsAPiServices.getAllNews();
@@ -202,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
               FutureBuilder<List<NewsModel>>(
-                  future: getNewsList(),
+                  future: NewsAPiServices.getAllNews(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return newType == NewsType.allNews
