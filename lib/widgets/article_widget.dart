@@ -9,8 +9,15 @@ import 'package:news_app/widgets/vertical_spacing.dart';
 import 'package:page_transition/page_transition.dart';
 
 class ArticleWidget extends StatelessWidget {
-  const ArticleWidget({super.key, required this.imageUrl});
-  final String imageUrl;
+  const ArticleWidget({
+    super.key,
+    required this.imageUrl,
+    required this.title,
+    required this.url,
+    required this.dateToShow,
+    required this.readingTime,
+  });
+  final String imageUrl, title, url, dateToShow, readingTime;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +71,7 @@ class ArticleWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Title' * 100,
+                          title,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: smallTextStyle,
@@ -75,7 +82,7 @@ class ArticleWidget extends StatelessWidget {
                         Align(
                           alignment: Alignment.topRight,
                           child: Text(
-                            '🕒 Reading time',
+                            readingTime,
                             style: smallTextStyle,
                           ),
                         ),
@@ -87,7 +94,7 @@ class ArticleWidget extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     PageTransition(
-                                      child: const NewsDetailsWebView(),
+                                      child: NewsDetailsWebView(url: url),
                                       type: PageTransitionType.rightToLeft,
                                       inheritTheme: true,
                                       ctx: context,
@@ -100,7 +107,7 @@ class ArticleWidget extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                '20-02-2020' * 2,
+                                dateToShow,
                                 maxLines: 1,
                                 style: smallTextStyle,
                               ),

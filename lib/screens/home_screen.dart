@@ -205,9 +205,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   future: getNewsList(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return LoadingWidget(
-                        newsType: newType,
-                      );
+                      return newType == NewsType.allNews
+                          ? LoadingWidget(
+                              newsType: newType,
+                            )
+                          : Expanded(child: LoadingWidget(newsType: newType));
                     } else if (snapshot.hasError) {
                       return Expanded(
                           child: EmptyNewsWdiget(
@@ -227,7 +229,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               itemCount: snapshot.data!.length,
                               itemBuilder: (ctx, index) {
                                 return ArticleWidget(
-                                    imageUrl: snapshot.data![index].urlToImage);
+                                  imageUrl: snapshot.data![index].urlToImage,
+                                  dateToShow: snapshot.data![index].dateToShow,
+                                  readingTime:
+                                      snapshot.data![index].readingTimeText,
+                                  title: snapshot.data![index].title,
+                                  url: snapshot.data![index].url,
+                                );
                               },
                             ),
                           )
@@ -241,7 +249,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               viewportFraction: 0.9,
                               itemCount: 5,
                               itemBuilder: (ctx, index) {
-                                return const TopTrendingWidget();
+                                return TopTrendingWidget(
+                                  url: snapshot.data![index].urlToImage,
+                                );
                               },
                             ),
                           );

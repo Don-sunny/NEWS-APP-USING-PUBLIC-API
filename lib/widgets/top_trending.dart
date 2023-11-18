@@ -8,7 +8,8 @@ import 'package:page_transition/page_transition.dart';
 import '../services/utils.dart';
 
 class TopTrendingWidget extends StatelessWidget {
-  const TopTrendingWidget({super.key});
+  const TopTrendingWidget({super.key, required this.url});
+  final String url;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +75,7 @@ class TopTrendingWidget extends StatelessWidget {
                           Navigator.push(
                             context,
                             PageTransition(
-                              child: const NewsDetailsWebView(),
+                              child: NewsDetailsWebView(url: url),
                               type: PageTransitionType.rightToLeft,
                               inheritTheme: true,
                               ctx: context,

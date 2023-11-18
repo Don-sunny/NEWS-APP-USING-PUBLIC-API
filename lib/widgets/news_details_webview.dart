@@ -11,44 +11,66 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsDetailsWebView extends StatefulWidget {
-  const NewsDetailsWebView({super.key});
+  const NewsDetailsWebView({super.key, required this.url});
+  final String url;
 
   @override
   State<NewsDetailsWebView> createState() => _NewsDetailsWebViewState();
 }
 
 class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
-  final url = 'https://github.com/NaimurNoyon/WebView_App';
+  // final url = 'https://github.com/NaimurNoyon/WebView_App';
   static double pro = 0;
   Connectivity connectivity = Connectivity();
-  WebViewController controller = WebViewController()
-    ..enableZoom(true)
-    ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    ..setBackgroundColor(const Color(0x00000000))
-    ..setNavigationDelegate(
-      NavigationDelegate(
-        onPageStarted: (String url) {},
-        onPageFinished: (String url) {},
-        onWebResourceError: (WebResourceError error) {},
-        onNavigationRequest: (NavigationRequest request) {
-          if (request.url.startsWith('https://www.youtube.com/')) {
-            return NavigationDecision.prevent;
-          }
-          return NavigationDecision.navigate;
-        },
-      ),
-    )
-    ..loadRequest(Uri.parse('https://github.com/NaimurNoyon/WebView_App'));
+  WebViewController controller = WebViewController();
+  //   ..enableZoom(true)
+  //   ..setJavaScriptMode(JavaScriptMode.unrestricted)
+  //   ..setBackgroundColor(const Color(0x00000000))
+  //   ..setNavigationDelegate(
+  //     NavigationDelegate(
+  //       onPageStarted: (String url) {},
+  //       onPageFinished: (String url) {},
+  //       onWebResourceError: (WebResourceError error) {},
+  //       onNavigationRequest: (NavigationRequest request) {
+  //         if (request.url.startsWith('https://www.youtube.com/')) {
+  //           return NavigationDecision.prevent;
+  //         }
+  //         return NavigationDecision.navigate;
+  //       },
+  //     ),
+  //   )
+  //   ..loadRequest(Uri.parse(widget.url));
+  @override
+  void initState() {
+    controller = WebViewController()
+      ..enableZoom(true)
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (String url) {},
+          onPageFinished: (String url) {},
+          onWebResourceError: (WebResourceError error) {},
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.startsWith('https://www.youtube.com/')) {
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..setNavigationDelegate(NavigationDelegate(onProgress: (int progress) {
+        setState(() {
+          pro = progress / 100;
+        });
+      }))
+      ..loadRequest(Uri.parse(widget.url));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     Color color = Utils(context: context).getColor;
-    controller
-        .setNavigationDelegate(NavigationDelegate(onProgress: (int progress) {
-      setState(() {
-        pro = progress / 100;
-      });
-    }));
     return WillPopScope(
       onWillPop: () async {
         if (await controller.canGoBack()) {
@@ -68,7 +90,7 @@ class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
           iconTheme: IconThemeData(color: color),
           centerTitle: true,
           title: Text(
-            'https://github.com/NaimurNoyon/WebView_App',
+            widget.url,
             style: TextStyle(color: color),
           ),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -140,8 +162,7 @@ class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
                   title: const Text('Share'),
                   onTap: () async {
                     try {
-                      Share.share('https://github.com/NaimurNoyon/WebView_App',
-                          subject: 'Look what I made!');
+                      Share.share(widget.url, subject: 'Look what I made!');
                     } catch (err) {
                       GlobalMethod.errorDialog(
                           errorMessage: err.toString(), context: context);
@@ -152,8 +173,8 @@ class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
                   leading: const Icon(Icons.open_in_browser),
                   title: const Text('Open in browser'),
                   onTap: () async {
-                    if (!await launchUrl(Uri.parse(url))) {
-                      throw 'Could not launch $url';
+                    if (!await launchUrl(Uri.parse(widget.url))) {
+                      throw 'Could not launch $Widget.url';
                     }
                   },
                 ),
