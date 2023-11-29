@@ -6,7 +6,6 @@ import 'package:news_app/consts/vars.dart';
 import 'package:news_app/inner_screens/serach_screen.dart';
 import 'package:news_app/models/news_model.dart';
 import 'package:news_app/providers/news_providers.dart';
-import 'package:news_app/services/news_api.dart';
 import 'package:news_app/services/utils.dart';
 import 'package:news_app/widgets/article_widget.dart';
 import 'package:news_app/widgets/drawer_widget.dart';
@@ -37,12 +36,12 @@ class _HomeScreenState extends State<HomeScreen> {
   //   super.didChangeDependencies();
   // }
 
-  Future<List<NewsModel>> getNewsList() async {
-    List<NewsModel> newsList = await NewsAPiServices.getAllNews();
-    return newsList;
+  // Future<List<NewsModel>> getNewsList() async {
+  //   List<NewsModel> newsList = await NewsAPiServices.getAllNews();
+  //   return newsList;
 
-    // setState(() {});
-  }
+  //   // setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -205,7 +204,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
               FutureBuilder<List<NewsModel>>(
-                  future: newsProvider.fetchAllnews(),
+                  future: newType == NewsType.topTrending
+                      ? newsProvider.fetchTopHeadlines()
+                      : newsProvider.fetchAllnews(
+                          pageIndex: currentPageIndex + 1,
+                          sortBy: sortBy,
+                        ),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return newType == NewsType.allNews
@@ -231,13 +235,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: ListView.builder(
                               itemCount: snapshot.data!.length,
                               itemBuilder: (ctx, index) {
-                                return ArticleWidget(
-                                  imageUrl: snapshot.data![index].urlToImage,
-                                  dateToShow: snapshot.data![index].dateToShow,
-                                  readingTime:
-                                      snapshot.data![index].readingTimeText,
-                                  title: snapshot.data![index].title,
-                                  url: snapshot.data![index].url,
+                                return ChangeNotifierProvider.value(
+                                  value: snapshot.data![index],
+                                  child: const ArticleWidget(
+                                      // imageUrl: snapshot.data![index].urlToImage,
+                                      // dateToShow: snapshot.data![index].dateToShow,
+                                      // readingTime:
+                                      //     snapshot.data![index].readingTimeText,
+                                      // title: snapshot.data![index].title,
+                                      // url: snapshot.data![index].url,
+                                      ),
                                 );
                               },
                             ),
@@ -250,10 +257,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               itemWidth: size.width * 0.9,
                               layout: SwiperLayout.STACK,
                               viewportFraction: 0.9,
-                              itemCount: 5,
+                              itemCount: snapshot.data!.length,
                               itemBuilder: (ctx, index) {
-                                return TopTrendingWidget(
-                                  url: snapshot.data![index].urlToImage,
+                                return ChangeNotifierProvider.value(
+                                  value: snapshot.data![index],
+                                  child: const TopTrendingWidget(
+                                      // url: snapshot.data![index].urlToImage,
+                                      ),
                                 );
                               },
                             ),

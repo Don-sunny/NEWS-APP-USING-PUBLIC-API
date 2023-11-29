@@ -1,24 +1,26 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:news_app/providers/news_providers.dart';
+import 'package:news_app/services/global_method.dart';
 import 'package:news_app/widgets/vertical_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../consts/styles.dart';
 import '../services/utils.dart';
 
-class NewsDetailsScreen extends StatefulWidget {
+class NewsDetailsScreen extends StatelessWidget {
   static const routeName = "/NewsDetailsScreen";
   const NewsDetailsScreen({super.key});
 
   @override
-  State<NewsDetailsScreen> createState() => _NewsDetailsScreenState();
-}
-
-class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
-  @override
   Widget build(BuildContext context) {
     final color = Utils(context: context).getColor;
+    final newsProvider = Provider.of<NewsProvider>(context);
+    final publishedAt = ModalRoute.of(context)!.settings.arguments as String;
+    final currentNews = newsProvider.findByDate(publishedAt: publishedAt);
 
     return Scaffold(
       appBar: AppBar(
@@ -27,7 +29,7 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         centerTitle: true,
         title: Text(
-          "By Author",
+          "By ${currentNews.authorName}",
           textAlign: TextAlign.center,
           style: TextStyle(color: color),
         ),
@@ -49,7 +51,7 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Title" * 10,
+                  currentNews.title,
                   textAlign: TextAlign.justify,
                   style: titleTextStyle,
                 ),
@@ -57,12 +59,12 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
                 Row(
                   children: [
                     Text(
-                      "20/20/2015",
+                      currentNews.dateToShow,
                       style: smallTextStyle,
                     ),
                     const Spacer(),
                     Text(
-                      "readingTimeText",
+                      currentNews.readingTimeText,
                       style: smallTextStyle,
                     ),
                   ],
@@ -77,11 +79,13 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
                 width: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 25),
-                  child: FancyShimmerImage(
-                    boxFit: BoxFit.fill,
-                    errorWidget: Image.asset('assets/images/empty_image.png'),
-                    imageUrl:
-                        "https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
+                  child: Hero(
+                    tag: currentNews.publishedAt,
+                    child: FancyShimmerImage(
+                      boxFit: BoxFit.fill,
+                      errorWidget: Image.asset('assets/images/empty_image.png'),
+                      imageUrl: currentNews.urlToImage,
+                    ),
                   ),
                 ),
               ),
@@ -93,7 +97,15 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
                   child: Row(
                     children: [
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () async {
+                          try {
+                            Share.share(currentNews.url,
+                                subject: 'Look what I made!');
+                          } catch (err) {
+                            GlobalMethod.errorDialog(
+                                errorMessage: err.toString(), context: context);
+                          }
+                        },
                         child: Card(
                           elevation: 10,
                           shape: const CircleBorder(),
@@ -141,7 +153,7 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
                 ),
                 const VerticalSapcing(height: 20),
                 TextContent(
-                  label: "description " * 12,
+                  label: currentNews.description,
                   fontSize: 18,
                   fontWeight: FontWeight.normal,
                 ),
@@ -157,7 +169,7 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
                   height: 10,
                 ),
                 TextContent(
-                  label: "content " * 12,
+                  label: currentNews.content,
                   fontSize: 18,
                   fontWeight: FontWeight.normal,
                 ),

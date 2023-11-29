@@ -2,19 +2,24 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app/inner_screens/blog_details.dart';
+import 'package:news_app/models/news_model.dart';
 import 'package:news_app/widgets/news_details_webview.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 
 import '../services/utils.dart';
 
 class TopTrendingWidget extends StatelessWidget {
-  const TopTrendingWidget({super.key, required this.url});
-  final String url;
+  const TopTrendingWidget({
+    super.key,
+  });
+  // final String url;
 
   @override
   Widget build(BuildContext context) {
     final size = Utils(context: context).getScreenSize;
     final Color color = Utils(context: context).getColor;
+    final newsProvider = Provider.of<NewsModel>(context);
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Material(
@@ -41,17 +46,19 @@ class TopTrendingWidget extends StatelessWidget {
                 child: FancyShimmerImage(
                   boxFit: BoxFit.fill,
                   errorWidget: Image.asset('assets/images/empty_image.png'),
-                  imageUrl:
-                      "https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
+                  imageUrl: newsProvider.urlToImage,
                   height: size.height * 0.33,
                   width: double.infinity,
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Title',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                  newsProvider.title,
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 24),
                 ),
               ),
               Row(
@@ -75,7 +82,7 @@ class TopTrendingWidget extends StatelessWidget {
                           Navigator.push(
                             context,
                             PageTransition(
-                              child: NewsDetailsWebView(url: url),
+                              child: NewsDetailsWebView(url: newsProvider.url),
                               type: PageTransitionType.rightToLeft,
                               inheritTheme: true,
                               ctx: context,
@@ -85,7 +92,7 @@ class TopTrendingWidget extends StatelessWidget {
                       )),
                   const Spacer(),
                   SelectableText(
-                    "20-20-2022",
+                    newsProvider.dateToShow,
                     style: GoogleFonts.montserrat(fontSize: 15),
                   ),
                 ],
